@@ -109,38 +109,49 @@ from sklearn.model_selection import LeaveOneOut
 
 ### added
 accs = []
-fold = None
+folds = []
 for i in range(1, 16):
     
     knn = KNeighborsClassifier(n_neighbors=i)
     
     # TODO: Cross Validation 3-8 folds
-    # cvr = cross_validation_range(knn, X, y, 3, 8) # not trained model!
-    # accs.append(cvr['accuracy'])
-    # print('Number Of Folds: ', cvr['numberOfFolds'])
+    cvr = cross_validation_range(knn, X, y, 3, 8) # not trained model! 3->8
+    accs.append(cvr['accuracy'])
+    folds.append(cvr['numberOfFolds'])
+    print('KNN k: ', i)
+    print('No. Folds That Give Max Accuracy: ', cvr['numberOfFolds'])
+    print('Accuracy: ', cvr['accuracy'])
     
     # TODO: LEAVE ONE OUT
     # loo = leave_one_out(knn, X, y)
     # knn = loo['trainedModel']
+    
+    #! Run the first two line With 1) or 2) Not with both in the same time to get correct values
+    
+    #! 1)
     # accs.append(loo['accuracy'])
     # print(loo['accuracy'])
     
+    #! 2)
     # y_pred = knn.predict(X_test)
     # acc = accuracy_score(y_test, y_pred)
     # accs.append(acc)
+    # print(acc)
     
     # TODO: First Task
-    acc = model_train(knn, X_train, X_test, y_train, y_test)['accuracy']
-    accs.append(acc)
-    print(f"Accuracy of {i} = {acc}")
+    # acc = model_train(knn, X_train, X_test, y_train, y_test)['accuracy']
+    # accs.append(acc)
+    # print(f"Accuracy of {i} = {acc}")
 
-print() # new line
+print()
+print('=======================================================')
+print()
 
 max_acc = max(accs)
 print(f"Max accuracy = {round(max_acc * 100, 2)}%")
-print(f"K = {accs.index(max_acc) + 1}")
+print(f"K of KNN = {accs.index(max_acc) + 1}")
 if 'cvr' in vars():
-    print('Folds Number Is: ', cvr['numberOfFolds'])
+    print('No. Folds: ', folds[accs.index(max_acc)])
 print() # new line
 
 # print(accs)
